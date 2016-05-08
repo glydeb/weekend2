@@ -1,0 +1,48 @@
+body {
+  margin: 10px 10%;
+}
+
+#container {
+  margin: 20px 20px;
+  height: 100px;
+}
+
+.hidden {
+  display: none;
+}
+
+button {
+  background-color: peachpuff;
+  height: 2em;
+  color: black;
+  font-size: 16px;
+  width: 85px
+}
+
+.next {
+  float: right;
+}
+
+.prev {
+  float: left;
+}
+#selector-bar {
+  margin: 0 95px 0 95px;
+}
+
+#selector-bar p {
+  color: blue;
+  text-decoration: none;
+  text-align: center;
+  height: 1.55em;
+  width: 2em;
+  margin: 0 2px 2px 2px;
+  display: inline-block;
+  border: 1px solid blue;
+  font-size: 16px;
+  padding-top: 0.45em;
+}
+
+.highlight {
+  background-color: peachpuff;
+}
