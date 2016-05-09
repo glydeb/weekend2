@@ -73,17 +73,15 @@ $(document).ready(function () {
         cancelTimer = setInterval(nextPerson, delay);
       });
 
+      //create a timer that will move to the next person
+      cancelTimer = setInterval(nextPerson, delay);
+
       // hide/reveal person function
       // anchor highlighter/dehighlighter
       function toggleID(id) {
         $('.person' + id).fadeToggle(700);
         $('.box' + id).toggleClass('highlight');
       }
-
-      //create a timer that will trigger the next event,
-      // and add the timer cancel to each of the buttons
-      // add the fade effects
-      cancelTimer = setInterval(nextPerson, delay);
 
       // function to move to next person when the button is clicked
       // (cancels and restarts the slideshow timer)
