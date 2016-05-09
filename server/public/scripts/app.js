@@ -18,25 +18,33 @@ $(document).ready(function () {
       $('footer').append('<button class="prev">Previous</button>');
       $('footer').append('<div id="selector-bar"></div>');
 
-      //create divs for each person
+      //create a graphical representation of the objects in the array
       for (var i = 0; i < data.mu.length; i++) {
-        $('#container').append('<div class="person' + i + ' hidden">');
-        var $el = $('#container').children().last();
-        nameElement = '<p>Name: ' + data.mu[i].name + '</p>';
-        linkElement = '<p>Github link: <a href = "https://github.com/' +
-          data.mu[i].git_username + '">https://github.com/' +
-          data.mu[i].git_username + '</a></p>';
-        shoutOutElement = '<p>Shoutout: ' + data.mu[i].shoutout + '</p>';
-        $el.append(nameElement + linkElement + shoutOutElement);
-
-        //create a graphical representation of the objects in the array
         $('#selector-bar').append('<p class = "box' + i + '">' +
           (i + 1) + '</p>');
       }
 
-      //highlight first box and unhide first person
-      $('.box' + currentIndex).toggleClass('highlight');
-      $('.person' + currentIndex).toggleClass('hidden');
+      //create initial person
+      $('#container').append('<div class="person hidden">');
+      createEntry(0);
+
+      function createEntry(personIndex) {
+        nameElement = '<p>Name: ' + data.mu[personIndex].name + '</p>';
+        linkElement = '<p>Github link: <a href = "https://github.com/' +
+          data.mu[personIndex].git_username + '">https://github.com/' +
+          data.mu[personIndex].git_username + '</a></p>';
+        shoutOutElement = '<p>Shoutout: ' + data.mu[personIndex].shoutout + '</p>';
+        $('.person').append(nameElement + linkElement + shoutOutElement);
+
+        //highlight first box and fade in person info
+        $('.box' + personIndex).toggleClass('highlight');
+        $('.person').fadeIn(700);
+      }
+
+      function removeEntry(personIndex) {
+        $('.person').fadeOut(700).find('p').remove();
+        $('.box' + personIndex).toggleClass('highlight');
+      }
 
       //create next & previous button event handlers
       $('body').on('click', 'button.next', buttonNext);
@@ -46,7 +54,7 @@ $(document).ready(function () {
         // cancel slideshow timer, clear current person and move pointer
         // to previous person
         clearInterval(cancelTimer);
-        toggleID(currentIndex);
+        removeEntry(currentIndex);
         currentIndex--;
 
         // check for wrap
@@ -54,7 +62,7 @@ $(document).ready(function () {
 
         // wait for previous person to fade out, then fade in new person
         // and restart slideshow
-        setTimeout(toggleID, 800, currentIndex);
+        setTimeout(createEntry, 800, currentIndex);
         cancelTimer = setInterval(nextPerson, delay);
       });
 
@@ -64,24 +72,17 @@ $(document).ready(function () {
         // cancel slideshow timer, clear current person and move pointer
         // to clicked person
         clearInterval(cancelTimer);
-        toggleID(currentIndex);
+        removeEntry(currentIndex);
         currentIndex = (parseInt($(this).text())) - 1;
 
         // wait for previous person to fade out, then fade in new person
         // and restart slideshow
-        setTimeout(toggleID, 800, currentIndex);
+        setTimeout(createEntry, 800, currentIndex);
         cancelTimer = setInterval(nextPerson, delay);
       });
 
       //create a timer that will move to the next person
       cancelTimer = setInterval(nextPerson, delay);
-
-      // hide/reveal person function
-      // anchor highlighter/dehighlighter
-      function toggleID(id) {
-        $('.person' + id).fadeToggle(700);
-        $('.box' + id).toggleClass('highlight');
-      }
 
       // function to move to next person when the button is clicked
       // (cancels and restarts the slideshow timer)
@@ -95,14 +96,14 @@ $(document).ready(function () {
       function nextPerson() {
 
         // fade out current person and move target to next person
-        toggleID(currentIndex);
+        removeEntry(currentIndex);
         currentIndex++;
 
         // check for wrap
         if (currentIndex >= data.mu.length) { currentIndex = 0; }
 
         // wait for previous person to fade out, then fade new one in
-        setTimeout(toggleID, 800, currentIndex);
+        setTimeout(createEntry, 800, currentIndex);
       }
     },
   });
